@@ -1,5 +1,11 @@
 package com.nexturn.mtbs.repository;
 
-public interface UserRepository {
+import com.nexturn.mtbs.entity.User;
+import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Optional;
+
+public interface UserRepository extends JpaRepository<User, Long> {
+
+    Optional<User> findByEmail(String email);
 }

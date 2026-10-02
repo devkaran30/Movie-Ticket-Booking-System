@@ -1,8 +1,8 @@
 package com.nexturn.mtbs.enums;
 
-public enum UserStatus {
+public enum ScreenStatus {
 
     ACTIVE,
     INACTIVE,
-    BLOCKED
+    MAINTENANCE
 }
