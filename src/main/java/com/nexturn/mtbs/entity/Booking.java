@@ -1,48 +1,82 @@
 package com.nexturn.mtbs.entity;
 
+import com.nexturn.mtbs.enums.BookingStatus;
+import jakarta.persistence.*;
+
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-
 @Entity
-@Table(name = "booking")
+@Table(
+        name = "bookings",
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        name = "uk_booking_number",
+                        columnNames = "booking_number"
+                )
+        }
+)
 public class Booking {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "booking_id")
-    private Integer bookingId;
+    private Long id;
 
-    @ManyToOne
+    @Column(
+            name = "booking_number",
+            nullable = false,
+            unique = true,
+            length = 50
+    )
+    private String bookingNumber;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "show_id", nullable = false)
     private Show show;
 
-    @Column(name = "booking_date", nullable = false)
-    private LocalDateTime bookingDate;
+    @Column(nullable = false, precision = 10, scale = 2)
+    private BigDecimal totalAmount;
 
-    @Column(name = "total_amount")
-    private Double totalAmount;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 20)
+    private BookingStatus bookingStatus;
 
-    @Column(name = "booking_status", length = 30)
-    private String bookingStatus;
+    @Column(nullable = false)
+    private LocalDateTime bookingTime;
 
-    public Integer getBookingId() {
-        return bookingId;
+    public Booking() {
     }
 
-    public void setBookingId(Integer bookingId) {
-        this.bookingId = bookingId;
+    public Booking(Long id, String bookingNumber, User user, Show show,
+                   BigDecimal totalAmount, BookingStatus bookingStatus,
+                   LocalDateTime bookingTime) {
+        this.id = id;
+        this.bookingNumber = bookingNumber;
+        this.user = user;
+        this.show = show;
+        this.totalAmount = totalAmount;
+        this.bookingStatus = bookingStatus;
+        this.bookingTime = bookingTime;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getBookingNumber() {
+        return bookingNumber;
+    }
+
+    public void setBookingNumber(String bookingNumber) {
+        this.bookingNumber = bookingNumber;
     }
 
     public User getUser() {
@@ -61,27 +95,27 @@ public class Booking {
         this.show = show;
     }
 
-    public LocalDateTime getBookingDate() {
-        return bookingDate;
-    }
-
-    public void setBookingDate(LocalDateTime bookingDate) {
-        this.bookingDate = bookingDate;
-    }
-
-    public Double getTotalAmount() {
+    public BigDecimal getTotalAmount() {
         return totalAmount;
     }
 
-    public void setTotalAmount(Double totalAmount) {
+    public void setTotalAmount(BigDecimal totalAmount) {
         this.totalAmount = totalAmount;
     }
 
-    public String getBookingStatus() {
+    public BookingStatus getBookingStatus() {
         return bookingStatus;
     }
 
-    public void setBookingStatus(String bookingStatus) {
+    public void setBookingStatus(BookingStatus bookingStatus) {
         this.bookingStatus = bookingStatus;
+    }
+
+    public LocalDateTime getBookingTime() {
+        return bookingTime;
+    }
+
+    public void setBookingTime(LocalDateTime bookingTime) {
+        this.bookingTime = bookingTime;
     }
 }

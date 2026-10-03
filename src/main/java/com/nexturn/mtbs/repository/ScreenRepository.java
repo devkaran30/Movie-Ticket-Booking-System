@@ -1,5 +1,7 @@
 package com.nexturn.mtbs.repository;
 
-public interface ScreenRepository {
+import com.nexturn.mtbs.entity.Screen;
+import org.springframework.data.jpa.repository.JpaRepository;
 
+public interface ScreenRepository extends JpaRepository<Screen, Long> {
 }

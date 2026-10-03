@@ -8,7 +8,7 @@
 		<version>4.1.1</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.mtbs</groupId>
+	<groupId>com.nexturn.mtbs</groupId>
 	<artifactId>movie-ticket-booking-system</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name/>

@@ -2,32 +2,55 @@ package com.nexturn.mtbs.entity;
 
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
+
 @Entity
-@Table(name = "booking_seat")
+@Table(
+        name = "booking_seats",
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        name = "uk_booking_seat",
+                        columnNames = {"booking_id", "seat_id"}
+                )
+        }
+)
 public class BookingSeat {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "booking_seat_id")
-    private Integer bookingSeatId;
+    private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "booking_id", nullable = false)
     private Booking booking;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "seat_id", nullable = false)
     private Seat seat;
 
-    @Column(name = "price")
-    private Double price;
+    @Column(nullable = false, precision = 10, scale = 2)
+    private BigDecimal price;
 
-    public Integer getBookingSeatId() {
-        return bookingSeatId;
+    // Default constructor
+    public BookingSeat() {
     }
 
-    public void setBookingSeatId(Integer bookingSeatId) {
-        this.bookingSeatId = bookingSeatId;
+    // Parameterized constructor
+    public BookingSeat(Long id, Booking booking, Seat seat, BigDecimal price) {
+        this.id = id;
+        this.booking = booking;
+        this.seat = seat;
+        this.price = price;
+    }
+
+    // Getters and Setters
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Booking getBooking() {
@@ -46,11 +69,11 @@ public class BookingSeat {
         this.seat = seat;
     }
 
-    public Double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 }

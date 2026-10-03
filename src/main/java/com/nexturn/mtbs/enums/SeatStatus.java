@@ -1,7 +1,7 @@
 package com.nexturn.mtbs.enums;
 
-public enum TheatreStatus {
+public enum SeatStatus {
 
-    ACTIVE,
+    AVAILABLE,
     INACTIVE
 }
