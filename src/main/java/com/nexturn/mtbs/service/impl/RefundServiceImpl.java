@@ -25,7 +25,9 @@ public class RefundServiceImpl implements RefundService {
     public Refund getRefundById(Long id) {
         return refundRepository.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException("Refund not found with id: " + id));
+                        new RuntimeException(
+                                "Refund not found with id: " + id
+                        ));
     }
 
     @Override
@@ -34,23 +36,33 @@ public class RefundServiceImpl implements RefundService {
     }
 
     @Override
+    public List<Refund> getRefundsByUserId(Long userId) {
+        return refundRepository.findByPaymentBookingUserId(userId);
+    }
+
+    @Override
     public Refund updateRefund(Long id, Refund refund) {
 
         Refund existingRefund = getRefundById(id);
 
         existingRefund.setPayment(refund.getPayment());
+
         existingRefund.setRefundTransactionId(
                 refund.getRefundTransactionId()
         );
+
         existingRefund.setRefundAmount(
                 refund.getRefundAmount()
         );
+
         existingRefund.setRefundReason(
                 refund.getRefundReason()
         );
+
         existingRefund.setRefundStatus(
                 refund.getRefundStatus()
         );
+
         existingRefund.setRefundTime(
                 refund.getRefundTime()
         );

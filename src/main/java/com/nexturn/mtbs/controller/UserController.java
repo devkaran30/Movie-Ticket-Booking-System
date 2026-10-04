@@ -1,11 +1,13 @@
 package com.nexturn.mtbs.controller;
 
+import com.nexturn.mtbs.dto.response.UserResponse;
 import com.nexturn.mtbs.entity.User;
 import com.nexturn.mtbs.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/users")
@@ -17,43 +19,65 @@ public class UserController {
         this.userService = userService;
     }
 
+    // Convert User entity to UserResponse
+    private UserResponse toUserResponse(User user) {
+
+        return new UserResponse(
+                user.getId(),
+                user.getName(),
+                user.getEmail(),
+                user.getPhoneNumber(),
+                user.getRole(),
+                user.getStatus()
+        );
+    }
+
     // Create user
     @PostMapping
-    public ResponseEntity<User> createUser(
+    public ResponseEntity<UserResponse> createUser(
             @RequestBody User user) {
 
+        User savedUser = userService.createUser(user);
+
         return ResponseEntity.ok(
-                userService.createUser(user)
+                toUserResponse(savedUser)
         );
     }
 
     // Get all users
     @GetMapping
-    public ResponseEntity<List<User>> getAllUsers() {
+    public ResponseEntity<List<UserResponse>> getAllUsers() {
 
-        return ResponseEntity.ok(
-                userService.getAllUsers()
-        );
+        List<UserResponse> users = userService.getAllUsers()
+                .stream()
+                .map(this::toUserResponse)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(users);
     }
 
     // Get user by ID
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(
+    public ResponseEntity<UserResponse> getUserById(
             @PathVariable Long id) {
 
+        User user = userService.getUserById(id);
+
         return ResponseEntity.ok(
-                userService.getUserById(id)
+                toUserResponse(user)
         );
     }
 
     // Update user
     @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(
+    public ResponseEntity<UserResponse> updateUser(
             @PathVariable Long id,
             @RequestBody User user) {
 
+        User updatedUser = userService.updateUser(id, user);
+
         return ResponseEntity.ok(
-                userService.updateUser(id, user)
+                toUserResponse(updatedUser)
         );
     }
 

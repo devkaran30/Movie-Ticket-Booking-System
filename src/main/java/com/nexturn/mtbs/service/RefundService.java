@@ -12,6 +12,8 @@ public interface RefundService {
 
     List<Refund> getAllRefunds();
 
+    List<Refund> getRefundsByUserId(Long userId);
+
     Refund updateRefund(Long id, Refund refund);
 
     void deleteRefund(Long id);

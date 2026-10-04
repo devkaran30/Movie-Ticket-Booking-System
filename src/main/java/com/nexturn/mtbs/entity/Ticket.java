@@ -1,28 +1,45 @@
-package com.nexturn.mtbs.dto.response;
+package com.nexturn.mtbs.entity;
 
 import com.nexturn.mtbs.enums.TicketStatus;
+import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 
-public class TicketResponse {
+@Entity
+@Table(name = "tickets", uniqueConstraints = {
+        @UniqueConstraint(
+                name = "uk_ticket_number",
+                columnNames = "ticket_number"
+        )
+})
+public class Ticket {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "ticket_number", nullable = false, unique = true, length = 50)
     private String ticketNumber;
-    private Long bookingId;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "booking_id", nullable = false, unique = true)
+    private Booking booking;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 20)
     private TicketStatus ticketStatus;
+
+    @Column(nullable = false)
     private LocalDateTime issueTime;
 
-    public TicketResponse() {
+    public Ticket() {
     }
 
-    public TicketResponse(Long id,
-                          String ticketNumber,
-                          Long bookingId,
-                          TicketStatus ticketStatus,
-                          LocalDateTime issueTime) {
+    public Ticket(Long id, String ticketNumber, Booking booking,
+                  TicketStatus ticketStatus, LocalDateTime issueTime) {
         this.id = id;
         this.ticketNumber = ticketNumber;
-        this.bookingId = bookingId;
+        this.booking = booking;
         this.ticketStatus = ticketStatus;
         this.issueTime = issueTime;
     }
@@ -43,12 +60,12 @@ public class TicketResponse {
         this.ticketNumber = ticketNumber;
     }
 
-    public Long getBookingId() {
-        return bookingId;
+    public Booking getBooking() {
+        return booking;
     }
 
-    public void setBookingId(Long bookingId) {
-        this.bookingId = bookingId;
+    public void setBooking(Booking booking) {
+        this.booking = booking;
     }
 
     public TicketStatus getTicketStatus() {
