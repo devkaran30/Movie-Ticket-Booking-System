@@ -1,6 +1,7 @@
 package com.nexturn.mtbs.service.impl;
 
 import com.nexturn.mtbs.entity.Screen;
+import com.nexturn.mtbs.enums.ScreenStatus;
 import com.nexturn.mtbs.repository.ScreenRepository;
 import com.nexturn.mtbs.service.ScreenService;
 import org.springframework.stereotype.Service;
@@ -44,6 +45,16 @@ public class ScreenServiceImpl implements ScreenService {
         existingScreen.setName(screen.getName());
         existingScreen.setTotalSeats(screen.getTotalSeats());
         existingScreen.setStatus(screen.getStatus());
+
+        return screenRepository.save(existingScreen);
+    }
+
+    @Override
+    public Screen updateScreenStatus(Long id, ScreenStatus status) {
+
+        Screen existingScreen = getScreenById(id);
+
+        existingScreen.setStatus(status);
 
         return screenRepository.save(existingScreen);
     }

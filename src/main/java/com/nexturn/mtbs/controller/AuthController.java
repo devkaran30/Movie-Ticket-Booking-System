@@ -1,5 +1,6 @@
 package com.nexturn.mtbs.controller;
 
+import com.nexturn.mtbs.dto.response.UserResponse;
 import com.nexturn.mtbs.entity.User;
 import com.nexturn.mtbs.service.AuthService;
 import org.springframework.http.ResponseEntity;
@@ -16,17 +17,38 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<User> register(@RequestBody User user) {
+    public ResponseEntity<UserResponse> register(
+            @RequestBody User user) {
+
         User registeredUser = authService.register(user);
-        return ResponseEntity.ok(registeredUser);
+
+        return ResponseEntity.ok(
+                toUserResponse(registeredUser)
+        );
     }
 
     @PostMapping("/login")
-    public ResponseEntity<User> login(
+    public ResponseEntity<UserResponse> login(
             @RequestParam String email,
             @RequestParam String password) {
 
-        User loggedInUser = authService.login(email, password);
-        return ResponseEntity.ok(loggedInUser);
+        User loggedInUser =
+                authService.login(email, password);
+
+        return ResponseEntity.ok(
+                toUserResponse(loggedInUser)
+        );
+    }
+
+    private UserResponse toUserResponse(User user) {
+
+        return new UserResponse(
+                user.getId(),
+                user.getName(),
+                user.getEmail(),
+                user.getPhoneNumber(),
+                user.getRole(),
+                user.getStatus()
+        );
     }
 }

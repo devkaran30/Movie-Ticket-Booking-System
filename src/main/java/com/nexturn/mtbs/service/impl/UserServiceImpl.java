@@ -1,6 +1,7 @@
 package com.nexturn.mtbs.service.impl;
 
 import com.nexturn.mtbs.entity.User;
+import com.nexturn.mtbs.enums.UserStatus;
 import com.nexturn.mtbs.repository.UserRepository;
 import com.nexturn.mtbs.service.UserService;
 import org.springframework.stereotype.Service;
@@ -25,7 +26,9 @@ public class UserServiceImpl implements UserService {
     public User getUserById(Long id) {
         return userRepository.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException("User not found with id: " + id));
+                        new RuntimeException(
+                                "User not found with id: " + id
+                        ));
     }
 
     @Override
@@ -41,8 +44,19 @@ public class UserServiceImpl implements UserService {
         existingUser.setName(user.getName());
         existingUser.setEmail(user.getEmail());
         existingUser.setPhoneNumber(user.getPhoneNumber());
+        existingUser.setPassword(user.getPassword());
         existingUser.setRole(user.getRole());
         existingUser.setStatus(user.getStatus());
+
+        return userRepository.save(existingUser);
+    }
+
+    @Override
+    public User updateUserStatus(Long id, UserStatus status) {
+
+        User existingUser = getUserById(id);
+
+        existingUser.setStatus(status);
 
         return userRepository.save(existingUser);
     }

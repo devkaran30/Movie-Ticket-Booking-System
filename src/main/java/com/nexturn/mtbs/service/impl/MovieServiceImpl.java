@@ -1,6 +1,7 @@
 package com.nexturn.mtbs.service.impl;
 
 import com.nexturn.mtbs.entity.Movie;
+import com.nexturn.mtbs.enums.MovieStatus;
 import com.nexturn.mtbs.repository.MovieRepository;
 import com.nexturn.mtbs.service.MovieService;
 import org.springframework.stereotype.Service;
@@ -25,12 +26,24 @@ public class MovieServiceImpl implements MovieService {
     public Movie getMovieById(Long id) {
         return movieRepository.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException("Movie not found with id: " + id));
+                        new RuntimeException(
+                                "Movie not found with id: " + id
+                        ));
     }
 
     @Override
     public List<Movie> getAllMovies() {
         return movieRepository.findAll();
+    }
+
+    @Override
+    public List<Movie> getMoviesByStatus(MovieStatus status) {
+        return movieRepository.findByStatus(status);
+    }
+
+    @Override
+    public List<Movie> searchMoviesByTitle(String title) {
+        return movieRepository.findByTitleContainingIgnoreCase(title);
     }
 
     @Override
@@ -48,6 +61,16 @@ public class MovieServiceImpl implements MovieService {
         existingMovie.setPosterUrl(movie.getPosterUrl());
         existingMovie.setMovieFormat(movie.getMovieFormat());
         existingMovie.setStatus(movie.getStatus());
+
+        return movieRepository.save(existingMovie);
+    }
+
+    @Override
+    public Movie updateMovieStatus(Long id, MovieStatus status) {
+
+        Movie existingMovie = getMovieById(id);
+
+        existingMovie.setStatus(status);
 
         return movieRepository.save(existingMovie);
     }

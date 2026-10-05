@@ -1,5 +1,7 @@
+
 package com.nexturn.mtbs.controller;
 
+import com.nexturn.mtbs.dto.request.MovieRequest;
 import com.nexturn.mtbs.entity.Movie;
 import com.nexturn.mtbs.enums.MovieStatus;
 import com.nexturn.mtbs.service.MovieService;
@@ -9,43 +11,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/movies")
-public class MovieController {
+@RequestMapping("/api/admin/movies")
+public class AdminMovieController {
 
     private final MovieService movieService;
 
-    public MovieController(MovieService movieService) {
+    public AdminMovieController(MovieService movieService) {
         this.movieService = movieService;
-    }
-
-    // Create movie
-    @PostMapping
-    public ResponseEntity<Movie> createMovie(
-            @RequestBody Movie movie) {
-
-        return ResponseEntity.ok(
-                movieService.createMovie(movie)
-        );
-    }
-
-    // Search movies by title
-    @GetMapping("/search")
-    public ResponseEntity<List<Movie>> searchMovies(
-            @RequestParam String title) {
-
-        return ResponseEntity.ok(
-                movieService.searchMoviesByTitle(title)
-        );
-    }
-
-    // Get movies by status
-    @GetMapping(params = "status")
-    public ResponseEntity<List<Movie>> getMoviesByStatus(
-            @RequestParam MovieStatus status) {
-
-        return ResponseEntity.ok(
-                movieService.getMoviesByStatus(status)
-        );
     }
 
     // Get all movies
@@ -67,6 +39,16 @@ public class MovieController {
         );
     }
 
+    // Create movie
+    @PostMapping
+    public ResponseEntity<Movie> createMovie(
+            @RequestBody Movie movie) {
+
+        return ResponseEntity.ok(
+                movieService.createMovie(movie)
+        );
+    }
+
     // Update movie
     @PutMapping("/{id}")
     public ResponseEntity<Movie> updateMovie(
@@ -76,6 +58,21 @@ public class MovieController {
         return ResponseEntity.ok(
                 movieService.updateMovie(id, movie)
         );
+    }
+
+    // Update movie status
+    @PutMapping("/{id}/status")
+    public ResponseEntity<Movie> updateMovieStatus(
+            @PathVariable Long id,
+            @RequestBody MovieRequest request) {
+
+        Movie updatedMovie =
+                movieService.updateMovieStatus(
+                        id,
+                        request.getStatus()
+                );
+
+        return ResponseEntity.ok(updatedMovie);
     }
 
     // Delete movie

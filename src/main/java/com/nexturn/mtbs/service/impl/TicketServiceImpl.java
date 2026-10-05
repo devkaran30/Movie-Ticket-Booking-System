@@ -37,6 +37,11 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
+    public List<Ticket> getTicketsByUserId(Long userId) {
+        return ticketRepository.findByBookingUserId(userId);
+    }
+
+    @Override
     public Ticket updateTicket(Long id, Ticket ticket) {
 
         Ticket existingTicket = getTicketById(id);

@@ -1,6 +1,7 @@
 package com.nexturn.mtbs.service;
 
 import com.nexturn.mtbs.entity.Theatre;
+import com.nexturn.mtbs.enums.TheatreStatus;
 
 import java.util.List;
 
@@ -13,6 +14,8 @@ public interface TheatreService {
     List<Theatre> getAllTheatres();
 
     Theatre updateTheatre(Long id, Theatre theatre);
+
+    Theatre updateTheatreStatus(Long id, TheatreStatus status);
 
     void deleteTheatre(Long id);
 }

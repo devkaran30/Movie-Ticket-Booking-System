@@ -1,6 +1,7 @@
 package com.nexturn.mtbs.service.impl;
 
 import com.nexturn.mtbs.entity.Seat;
+import com.nexturn.mtbs.enums.SeatStatus;
 import com.nexturn.mtbs.repository.SeatRepository;
 import com.nexturn.mtbs.service.SeatService;
 import org.springframework.stereotype.Service;
@@ -45,6 +46,16 @@ public class SeatServiceImpl implements SeatService {
         existingSeat.setRowNumber(seat.getRowNumber());
         existingSeat.setSeatType(seat.getSeatType());
         existingSeat.setStatus(seat.getStatus());
+
+        return seatRepository.save(existingSeat);
+    }
+
+    @Override
+    public Seat updateSeatStatus(Long id, SeatStatus status) {
+
+        Seat existingSeat = getSeatById(id);
+
+        existingSeat.setStatus(status);
 
         return seatRepository.save(existingSeat);
     }

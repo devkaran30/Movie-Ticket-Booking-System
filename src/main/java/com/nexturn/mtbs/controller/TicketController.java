@@ -63,6 +63,18 @@ public class TicketController {
 
         return ResponseEntity.ok(tickets);
     }
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<TicketResponse>> getTicketsByUserId(
+            @PathVariable Long userId) {
+
+        List<TicketResponse> tickets =
+                ticketService.getTicketsByUserId(userId)
+                        .stream()
+                        .map(this::toTicketResponse)
+                        .collect(Collectors.toList());
+
+        return ResponseEntity.ok(tickets);
+    }
 
     @PutMapping("/{id}")
     public ResponseEntity<TicketResponse> updateTicket(

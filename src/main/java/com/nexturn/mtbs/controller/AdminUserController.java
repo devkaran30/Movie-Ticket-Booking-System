@@ -1,9 +1,8 @@
 package com.nexturn.mtbs.controller;
 
-import com.nexturn.mtbs.dto.request.ChangePasswordRequest;
+import com.nexturn.mtbs.dto.request.UserStatusRequest;
 import com.nexturn.mtbs.dto.response.UserResponse;
 import com.nexturn.mtbs.entity.User;
-import com.nexturn.mtbs.service.AuthService;
 import com.nexturn.mtbs.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,18 +11,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/users")
-public class UserController {
+@RequestMapping("/api/admin/users")
+public class AdminUserController {
 
     private final UserService userService;
-    private final AuthService authService;
 
-    public UserController(
-            UserService userService,
-            AuthService authService) {
-
+    public AdminUserController(UserService userService) {
         this.userService = userService;
-        this.authService = authService;
     }
 
     // Convert User entity to UserResponse
@@ -36,18 +30,6 @@ public class UserController {
                 user.getPhoneNumber(),
                 user.getRole(),
                 user.getStatus()
-        );
-    }
-
-    // Create user
-    @PostMapping
-    public ResponseEntity<UserResponse> createUser(
-            @RequestBody User user) {
-
-        User savedUser = userService.createUser(user);
-
-        return ResponseEntity.ok(
-                toUserResponse(savedUser)
         );
     }
 
@@ -75,34 +57,20 @@ public class UserController {
         );
     }
 
-    // Update user profile
-    @PutMapping("/{id}")
-    public ResponseEntity<UserResponse> updateUser(
+    // Update user status
+    @PutMapping("/{id}/status")
+    public ResponseEntity<UserResponse> updateUserStatus(
             @PathVariable Long id,
-            @RequestBody User user) {
+            @RequestBody UserStatusRequest request) {
 
-        User updatedUser = userService.updateUser(id, user);
+        User updatedUser =
+                userService.updateUserStatus(
+                        id,
+                        request.getStatus()
+                );
 
         return ResponseEntity.ok(
                 toUserResponse(updatedUser)
-        );
-    }
-
-    // Change user password
-    @PutMapping("/{id}/password")
-    public ResponseEntity<String> changePassword(
-            @PathVariable Long id,
-            @RequestBody ChangePasswordRequest request) {
-
-        authService.changePassword(
-                id,
-                request.getOldPassword(),
-                request.getNewPassword(),
-                request.getConfirmPassword()
-        );
-
-        return ResponseEntity.ok(
-                "Password updated successfully"
         );
     }
 

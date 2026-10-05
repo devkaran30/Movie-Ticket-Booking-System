@@ -1,6 +1,7 @@
 package com.nexturn.mtbs.service.impl;
 
 import com.nexturn.mtbs.entity.Theatre;
+import com.nexturn.mtbs.enums.TheatreStatus;
 import com.nexturn.mtbs.repository.TheatreRepository;
 import com.nexturn.mtbs.service.TheatreService;
 import org.springframework.stereotype.Service;
@@ -46,6 +47,18 @@ public class TheatreServiceImpl implements TheatreService {
         existingTheatre.setState(theatre.getState());
         existingTheatre.setPincode(theatre.getPincode());
         existingTheatre.setStatus(theatre.getStatus());
+
+        return theatreRepository.save(existingTheatre);
+    }
+
+    @Override
+    public Theatre updateTheatreStatus(
+            Long id,
+            TheatreStatus status) {
+
+        Theatre existingTheatre = getTheatreById(id);
+
+        existingTheatre.setStatus(status);
 
         return theatreRepository.save(existingTheatre);
     }

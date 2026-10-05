@@ -12,6 +12,8 @@ public interface TicketService {
 
     List<Ticket> getAllTickets();
 
+    List<Ticket> getTicketsByUserId(Long userId);
+
     Ticket updateTicket(Long id, Ticket ticket);
 
     void deleteTicket(Long id);

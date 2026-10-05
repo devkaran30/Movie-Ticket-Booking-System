@@ -198,17 +198,14 @@ public class BookingServiceImpl implements BookingService {
     @Transactional
     public Booking cancelBooking(Long bookingId) {
 
-        // 1. Find booking
         Booking booking = getBookingById(bookingId);
 
-        // 2. Booking must be CONFIRMED
         if (booking.getBookingStatus() != BookingStatus.CONFIRMED) {
             throw new RuntimeException(
                     "Only confirmed bookings can be cancelled"
             );
         }
 
-        // 3. Find payment
         Payment payment = paymentRepository.findByBookingId(bookingId)
                 .orElseThrow(() ->
                         new RuntimeException(
@@ -217,22 +214,18 @@ public class BookingServiceImpl implements BookingService {
                         )
                 );
 
-        // 4. Payment must be SUCCESS
         if (payment.getPaymentStatus() != PaymentStatus.SUCCESS) {
             throw new RuntimeException(
                     "Booking cannot be cancelled because payment is not successful"
             );
         }
 
-        // 5. Mark booking as CANCELLED
         booking.setBookingStatus(BookingStatus.CANCELLED);
         bookingRepository.save(booking);
 
-        // 6. Mark payment as REFUNDED
         payment.setPaymentStatus(PaymentStatus.REFUNDED);
         paymentRepository.save(payment);
 
-        // 7. Create refund
         Refund refund = new Refund();
 
         refund.setPayment(payment);
@@ -246,7 +239,6 @@ public class BookingServiceImpl implements BookingService {
 
         refundRepository.save(refund);
 
-        // 8. Find ticket and cancel it
         Ticket ticket = ticketRepository.findByBookingId(bookingId)
                 .orElseThrow(() ->
                         new RuntimeException(
@@ -258,11 +250,9 @@ public class BookingServiceImpl implements BookingService {
         ticket.setTicketStatus(TicketStatus.CANCELLED);
         ticketRepository.save(ticket);
 
-        // 9. Get seats belonging to this booking
         List<BookingSeat> bookingSeats =
                 bookingSeatRepository.findByBookingId(bookingId);
 
-        // 10. Make seats available again
         for (BookingSeat bookingSeat : bookingSeats) {
 
             Seat seat = bookingSeat.getSeat();
@@ -272,7 +262,6 @@ public class BookingServiceImpl implements BookingService {
             seatRepository.save(seat);
         }
 
-        // 11. Return updated booking
         return booking;
     }
 
@@ -290,6 +279,12 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public List<Booking> getAllBookings() {
         return bookingRepository.findAll();
+    }
+
+    @Override
+    public List<Booking> getBookingsByUserId(Long userId) {
+
+        return bookingRepository.findByUserId(userId);
     }
 
     @Override

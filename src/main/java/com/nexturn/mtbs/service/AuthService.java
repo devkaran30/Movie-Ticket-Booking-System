@@ -7,4 +7,11 @@ public interface AuthService {
     User register(User user);
 
     User login(String email, String password);
+
+    void changePassword(
+            Long userId,
+            String oldPassword,
+            String newPassword,
+            String confirmPassword
+    );
 }

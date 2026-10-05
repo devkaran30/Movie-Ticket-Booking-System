@@ -1,6 +1,5 @@
 package com.nexturn.mtbs.controller;
 
-import com.nexturn.mtbs.dto.request.BookingRequest;
 import com.nexturn.mtbs.dto.response.BookingResponse;
 import com.nexturn.mtbs.entity.Booking;
 import com.nexturn.mtbs.repository.BookingSeatRepository;
@@ -12,13 +11,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/bookings")
-public class BookingController {
+@RequestMapping("/api/admin/bookings")
+public class AdminBookingController {
 
     private final BookingService bookingService;
     private final BookingSeatRepository bookingSeatRepository;
 
-    public BookingController(
+    public AdminBookingController(
             BookingService bookingService,
             BookingSeatRepository bookingSeatRepository) {
 
@@ -46,30 +45,6 @@ public class BookingController {
         );
     }
 
-    @PostMapping
-    public ResponseEntity<BookingResponse> createBooking(
-            @RequestBody Booking booking) {
-
-        Booking savedBooking =
-                bookingService.createBooking(booking);
-
-        return ResponseEntity.ok(
-                toBookingResponse(savedBooking)
-        );
-    }
-
-    @PostMapping("/create")
-    public ResponseEntity<BookingResponse> createRealBooking(
-            @RequestBody BookingRequest bookingRequest) {
-
-        Booking booking =
-                bookingService.createRealBooking(bookingRequest);
-
-        return ResponseEntity.ok(
-                toBookingResponse(booking)
-        );
-    }
-
     @GetMapping
     public ResponseEntity<List<BookingResponse>> getAllBookings() {
 
@@ -82,29 +57,13 @@ public class BookingController {
         return ResponseEntity.ok(bookings);
     }
 
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<List<BookingResponse>> getBookingsByUserId(
-            @PathVariable Long userId) {
-
-        List<BookingResponse> bookings =
-                bookingService.getBookingsByUserId(userId)
-                        .stream()
-                        .map(this::toBookingResponse)
-                        .collect(Collectors.toList());
-
-        return ResponseEntity.ok(bookings);
-    }
-
     @GetMapping("/{id}")
     public ResponseEntity<BookingResponse> getBookingById(
             @PathVariable Long id) {
 
-        Booking booking =
-                bookingService.getBookingById(id);
+        Booking booking = bookingService.getBookingById(id);
 
-        return ResponseEntity.ok(
-                toBookingResponse(booking)
-        );
+        return ResponseEntity.ok(toBookingResponse(booking));
     }
 
     @PutMapping("/{id}")
@@ -117,18 +76,6 @@ public class BookingController {
 
         return ResponseEntity.ok(
                 toBookingResponse(updatedBooking)
-        );
-    }
-
-    @PostMapping("/{id}/cancel")
-    public ResponseEntity<BookingResponse> cancelBooking(
-            @PathVariable Long id) {
-
-        Booking cancelledBooking =
-                bookingService.cancelBooking(id);
-
-        return ResponseEntity.ok(
-                toBookingResponse(cancelledBooking)
         );
     }
 
