@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # MovieBook Frontend
 
 React 19 + Vite frontend for the Movie Ticket Booking System backend.
@@ -48,3 +49,6 @@ npm run dev
 Keep the Spring Boot backend running on port `8585`.
 
 The ZIP intentionally excludes `node_modules`; install dependencies on the target machine so native Vite/Rolldown packages are installed for that OS.
+=======
+# Frontend-Project
+>>>>>>> d258a953552f082066defb5f138d4ae36b42f60b
