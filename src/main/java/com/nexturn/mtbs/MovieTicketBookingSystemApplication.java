@@ -8,6 +8,7 @@ public class MovieTicketBookingSystemApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(MovieTicketBookingSystemApplication.class, args);
+		System.out.println("MTBS Application started successfully......");
 	}
 
 }

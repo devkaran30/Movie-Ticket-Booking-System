@@ -2,6 +2,7 @@ package com.nexturn.mtbs.service.impl;
 
 import com.nexturn.mtbs.entity.Seat;
 import com.nexturn.mtbs.enums.SeatStatus;
+import com.nexturn.mtbs.exception.SeatNotFoundException;
 import com.nexturn.mtbs.repository.SeatRepository;
 import com.nexturn.mtbs.service.SeatService;
 import org.springframework.stereotype.Service;
@@ -26,7 +27,7 @@ public class SeatServiceImpl implements SeatService {
     public Seat getSeatById(Long id) {
         return seatRepository.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException(
+                        new SeatNotFoundException(
                                 "Seat not found with id: " + id
                         ));
     }

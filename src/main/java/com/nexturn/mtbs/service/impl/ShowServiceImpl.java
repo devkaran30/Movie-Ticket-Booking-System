@@ -6,6 +6,7 @@ import com.nexturn.mtbs.entity.Seat;
 import com.nexturn.mtbs.entity.Show;
 import com.nexturn.mtbs.enums.BookingStatus;
 import com.nexturn.mtbs.enums.SeatLockStatus;
+import com.nexturn.mtbs.exception.ShowNotFoundException;
 import com.nexturn.mtbs.repository.BookingSeatRepository;
 import com.nexturn.mtbs.repository.SeatLockRepository;
 import com.nexturn.mtbs.repository.SeatRepository;
@@ -50,7 +51,7 @@ public class ShowServiceImpl implements ShowService {
 
         Show show = showRepository.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException(
+                        new ShowNotFoundException(
                                 "Show not found with id: " + id
                         ));
 

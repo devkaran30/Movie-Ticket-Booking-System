@@ -1,6 +1,7 @@
 package com.nexturn.mtbs.service.impl;
 
 import com.nexturn.mtbs.entity.User;
+import com.nexturn.mtbs.exception.UserNotFoundException;
 import com.nexturn.mtbs.repository.UserRepository;
 import com.nexturn.mtbs.service.AuthService;
 import org.springframework.stereotype.Service;
@@ -46,7 +47,7 @@ public class AuthServiceImpl implements AuthService {
 
         User user = userRepository.findById(userId)
                 .orElseThrow(() ->
-                        new RuntimeException(
+                        new UserNotFoundException(
                                 "User not found with id: " + userId
                         ));
 
@@ -73,3 +74,4 @@ public class AuthServiceImpl implements AuthService {
         userRepository.save(user);
     }
 }
+

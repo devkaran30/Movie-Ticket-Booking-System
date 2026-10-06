@@ -2,6 +2,7 @@ package com.nexturn.mtbs.service.impl;
 
 import com.nexturn.mtbs.entity.Movie;
 import com.nexturn.mtbs.enums.MovieStatus;
+import com.nexturn.mtbs.exception.MovieNotFoundException;
 import com.nexturn.mtbs.repository.MovieRepository;
 import com.nexturn.mtbs.service.MovieService;
 import org.springframework.stereotype.Service;
@@ -26,7 +27,7 @@ public class MovieServiceImpl implements MovieService {
     public Movie getMovieById(Long id) {
         return movieRepository.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException(
+                        new MovieNotFoundException(
                                 "Movie not found with id: " + id
                         ));
     }

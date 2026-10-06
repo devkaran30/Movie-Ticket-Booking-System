@@ -2,6 +2,7 @@ package com.nexturn.mtbs.service.impl;
 
 import com.nexturn.mtbs.entity.Theatre;
 import com.nexturn.mtbs.enums.TheatreStatus;
+import com.nexturn.mtbs.exception.TheatreNotFoundException;
 import com.nexturn.mtbs.repository.TheatreRepository;
 import com.nexturn.mtbs.service.TheatreService;
 import org.springframework.stereotype.Service;
@@ -26,7 +27,7 @@ public class TheatreServiceImpl implements TheatreService {
     public Theatre getTheatreById(Long id) {
         return theatreRepository.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException(
+                        new TheatreNotFoundException(
                                 "Theatre not found with id: " + id
                         ));
     }

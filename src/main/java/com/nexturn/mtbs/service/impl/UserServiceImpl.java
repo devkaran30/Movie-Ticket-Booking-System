@@ -1,6 +1,7 @@
 package com.nexturn.mtbs.service.impl;
 
 import com.nexturn.mtbs.entity.User;
+import com.nexturn.mtbs.exception.UserNotFoundException;
 import com.nexturn.mtbs.enums.UserStatus;
 import com.nexturn.mtbs.repository.UserRepository;
 import com.nexturn.mtbs.service.UserService;
@@ -26,7 +27,7 @@ public class UserServiceImpl implements UserService {
     public User getUserById(Long id) {
         return userRepository.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException(
+                        new UserNotFoundException(
                                 "User not found with id: " + id
                         ));
     }

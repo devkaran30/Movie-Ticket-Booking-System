@@ -1,5 +1,9 @@
+
 package com.nexturn.mtbs.exception;
 
-public class BookingNotFoundException {
+public class BookingNotFoundException extends RuntimeException {
 
+    public BookingNotFoundException(String message) {
+        super(message);
+    }
 }
